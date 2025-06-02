@@ -100,7 +100,17 @@ void loadContactsFromFile() {
 }
 // Load deleted contacts from trash file
 void loadDeletedContactsFromFile() {
-
+    ifstream inFile("trash.txt"); 
+    if (!inFile) { 
+        cout << "No existing trash file found.\n"; 
+        return; 
+    } 
+ 
+    string name, phoneNumber, timestamp; 
+    while (getline(inFile, name) && getline(inFile, phoneNumber) && getline(inFile, timestamp)) { 
+        deletedContacts.push_back({name, phoneNumber, timestamp, true, nullptr}); 
+    } 
+    inFile.close();
 
 }
 // Create a new contact
