@@ -61,6 +61,15 @@ cout << "Contacts saved to file.\n";
 // Save deleted contacts to trash file
 void saveDeletedContactsToFile() {
 
+ofstream outFile("trash.txt");
+if (!outFile) {
+cout << "Error opening trash file for writing.\n";
+return;
+}
+for (const auto& deleted : deletedContacts) {
+outFile << deleted.name << "\n" << deleted.phoneNumber << "\n" << deleted.timestamp << "\n";
+}
+outFile.close();
 
 
 }
