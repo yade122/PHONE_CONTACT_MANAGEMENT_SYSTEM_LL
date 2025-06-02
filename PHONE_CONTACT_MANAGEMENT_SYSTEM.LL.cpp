@@ -86,7 +86,32 @@ void loadDeletedContactsFromFile() {
 }
 // Create a new contact
 void createContact() {
-
+    string name, phoneNumber;
+    cout << "Enter name (letters and spaces only): ";
+    getline(cin, name);
+    if (!isValidName(name)) {
+    cout << "Invalid name. Must contain only letters and spaces.\n";
+    return;
+    }
+    cout << "Enter phone number (10-12 digits): ";
+    getline(cin, phoneNumber);
+    if (!isValidPhoneNumber(phoneNumber)) {
+    cout << "Invalid phone number or number already exists. Must be 10-12 digits.\n";
+    return;
+    }
+    string currentTime = getCurrentTime();
+    Contact* newContact = new Contact{name, phoneNumber, currentTime, false, nullptr};
+    if (head == nullptr) {
+    head = newContact;
+    } else {
+    Contact* temp = head;
+    while (temp->next != nullptr) {
+    temp = temp->next;
+    }
+    temp->next = newContact;
+    }
+    cout << "Contact added at " << currentTime << ".\n";
+    saveContactsToFile();
 
 
 }
