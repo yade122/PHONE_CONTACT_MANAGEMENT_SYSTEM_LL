@@ -134,19 +134,63 @@ void restoreContact() {
 }
 // Search for contact by name
 void searchContact() {
-
+    string name;
+    cout << "Enter the name to search: ";
+    getline(cin, name);
+    Contact* temp = head;
+    while (temp != nullptr) {
+    if (temp->name == name) {
+    cout << "Found - Name: " << temp->name << ", Phone: " << temp->phoneNumber
+    << ", Last Modified: " << temp->timestamp << endl;
+    return;
+    }
+    temp = temp->next;
+    }
+    cout << "Contact not found.\n";
+    
 
 
 }
 // Sort active contacts alphabetically by name
 void sortContacts() {
-
-
+    if (head == nullptr || head->next == nullptr) {
+        cout << "Not enough contacts to sort.\n";
+        return;
+        }
+        bool swapped;
+        Contact* ptr1;
+        Contact* lptr = nullptr;
+        do {
+        swapped = false;
+        ptr1 = head;
+        while (ptr1->next != lptr) {
+        if (ptr1->name > ptr1->next->name) {
+        swap(ptr1->name, ptr1->next->name);
+        swap(ptr1->phoneNumber, ptr1->next->phoneNumber);
+        swap(ptr1->timestamp, ptr1->next->timestamp);
+        swapped = true;
+        }
+        ptr1 = ptr1->next;
+        }
+        lptr = ptr1;
+        } while (swapped);
+        cout << "Contacts sorted by name.\n";
+        saveContactsToFile();
+        
 
 }
 // Display deletion count and details
 void showDeleteCount() {
-
+    cout << "Total contacts deleted: " << deletedContacts.size() << endl;
+    if (!deletedContacts.empty()) {
+    cout << "\nDeleted Contacts Details:\n";
+    for (const auto& deleted : deletedContacts) {
+    cout << "Name: " << deleted.name
+    << ", Phone: " << deleted.phoneNumber
+    << ", Deleted at: " << deleted.timestamp << endl;
+    }
+    }
+    
 
 
 }
