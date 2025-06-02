@@ -44,8 +44,18 @@ return true;
 }
 // Save active contacts to file
 void saveContactsToFile() {
-
-
+ofstream outFile("contacts.txt");
+if (!outFile) {
+cout << "Error opening file for writing.\n";
+return;
+}
+Contact* temp = head;
+while (temp != nullptr) {
+outFile << temp->name << "\n" << temp->phoneNumber << "\n" << temp->timestamp << "\n";
+temp = temp->next;
+}
+outFile.close();
+cout << "Contacts saved to file.\n";
 
 }
 // Save deleted contacts to trash file
