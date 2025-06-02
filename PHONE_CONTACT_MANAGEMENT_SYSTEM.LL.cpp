@@ -120,6 +120,17 @@ void createContact() {
 
 // Retrieve all active contacts
 void retrieveContacts() {
+    if (head == nullptr) {
+        cout << "Contact list is empty.\n";
+        return;
+        }
+        Contact* temp = head;
+        cout << "All Contacts:\n";
+        while (temp != nullptr) {
+        cout << "Name: " << temp->name << ", Phone: " << temp->phoneNumber
+        << ", Last Modified: " << temp->timestamp << endl;
+        temp = temp->next;
+        }
 
 
 }
