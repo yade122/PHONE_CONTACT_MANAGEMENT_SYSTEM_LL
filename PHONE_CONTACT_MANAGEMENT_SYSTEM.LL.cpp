@@ -76,7 +76,26 @@ outFile.close();
 // Load active contacts from file
 void loadContactsFromFile() {
 
-
+    ifstream inFile("contacts.txt"); 
+    if (!inFile) { 
+        cout << "No existing contact file found.\n"; 
+        return; 
+    } 
+ 
+    string name, phoneNumber, timestamp; 
+    while (getline(inFile, name) && getline(inFile, phoneNumber) && getline(inFile, timestamp)) { 
+        Contact* newContact = new Contact{name, phoneNumber, timestamp, false, nullptr}; 
+        if (head == nullptr) { 
+            head = newContact; 
+        } else { 
+            Contact* temp = head; 
+            while (temp->next != nullptr) { 
+                temp = temp->next; 
+            } 
+            temp->next = newContact; 
+        } 
+    } 
+    inFile.close();
 
 }
 // Load deleted contacts from trash file
