@@ -157,13 +157,86 @@ void updateContact() {
 }
 // Delete contact by name
 void deleteContact() {
-
+    string name;
+    cout << "Enter the name of the contact to delete: ";
+    getline(cin, name);
+    if (head == nullptr) {
+    cout << "Contact list is empty.\n";
+    return;
+    }
+    if (head->name == name) {
+    Contact* temp = head;
+    deletedContacts.push_back({temp->name, temp->phoneNumber, getCurrentTime(), true, nullptr});
+    cout << "Contact '" << temp->name << "' moved to trash at " << deletedContacts.back().timestamp 
+   << ".\n";
+    head = head->next;
+    delete temp;
+    saveContactsToFile();
+    saveDeletedContactsToFile();
+    return;
+    }
+    Contact* current = head;
+    Contact* prev = nullptr;
+    while (current != nullptr && current->name != name) {
+    prev = current;
+    current = current->next;
+    }
+    if (current == nullptr) {
+        cout << "Contact not found.\n";
+        return;
+        }
+        deletedContacts.push_back({current->name, current->phoneNumber, getCurrentTime(), true, 
+       nullptr});
+        cout << "Contact '" << current->name << "' moved to trash at " << deletedContacts.back().timestamp 
+       << ".\n";
+        prev->next = current->next;
+        delete current;
+        saveContactsToFile();
+        saveDeletedContactsToFile();
+       
 
 
 }
 // Restore contact from trash
 void restoreContact() {
-
+    if (deletedContacts.empty()) {
+        cout << "Trash is empty.\n";
+        return;
+        }
+        cout << "Deleted Contacts:\n";
+        for (size_t i = 0; i < deletedContacts.size(); ++i) {
+        cout << i + 1 << ". Name: " << deletedContacts[i].name
+        << ", Phone: " << deletedContacts[i].phoneNumber
+        << ", Deleted at: " << deletedContacts[i].timestamp << endl;
+        }
+        cout << "Enter the number of the contact to restore (or 0 to cancel): ";
+        int choice;
+        cin >> choice;
+       // clearInputBuffer();
+        if (choice == 0  choice < 1  choice > static_cast<int>(deletedContacts.size())) {
+        cout << "Invalid choice. Restore cancelled.\n";
+        return;
+        }
+        auto deleted = deletedContacts[choice - 1];
+ if (!isValidPhoneNumber(deleted.phoneNumber)) {
+ cout << "Cannot restore: Phone number already exists in contacts.\n";
+ return;
+ }
+ Contact* newContact = new Contact{deleted.name, deleted.phoneNumber, getCurrentTime(), false, 
+nullptr};
+ if (head == nullptr) {
+ head = newContact;
+ } else {
+ Contact* temp = head;
+ while (temp->next != nullptr) {
+ temp = temp->next;
+ }
+ temp->next = newContact;
+ }
+ cout << "Contact '" << deleted.name << "' restored at " << newContact->timestamp << ".\n";
+ deletedContacts.erase(deletedContacts.begin() + (choice - 1));
+ saveContactsToFile();
+ saveDeletedContactsToFile();
 
 
 }
