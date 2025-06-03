@@ -103,7 +103,43 @@ void updateContact() {
 }
 // Delete contact by name
 void deleteContact() {
-
+    string name;
+    cout << "Enter the name of the contact to delete: ";
+    getline(cin, name);
+    if (head == nullptr) {
+    cout << "Contact list is empty.\n";
+    return;
+    }
+    if (head->name == name) {
+    Contact* temp = head;
+    deletedContacts.push_back({temp->name, temp->phoneNumber, getCurrentTime(), true, nullptr});
+    cout << "Contact '" << temp->name << "' moved to trash at " << deletedContacts.back().timestamp 
+   << ".\n";
+    head = head->next;
+    delete temp;
+    saveContactsToFile();
+    saveDeletedContactsToFile();
+    return;
+    }
+    Contact* current = head;
+    Contact* prev = nullptr;
+    while (current != nullptr && current->name != name) {
+    prev = current;
+    current = current->next;
+    }
+    if (current == nullptr) {
+        cout << "Contact not found.\n";
+        return;
+        }
+        deletedContacts.push_back({current->name, current->phoneNumber, getCurrentTime(), true, 
+       nullptr});
+        cout << "Contact '" << current->name << "' moved to trash at " << deletedContacts.back().timestamp 
+       << ".\n";
+        prev->next = current->next;
+        delete current;
+        saveContactsToFile();
+        saveDeletedContactsToFile();
+       
 
 
 }
