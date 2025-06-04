@@ -161,8 +161,36 @@ temp = temp->next;
 }
 // Update contact by name
 void updateContact() {
-
-
+string oldName;
+cout << "Enter the name of the contact to update: ";
+getline(cin, oldName);
+Contact* temp = head;
+while (temp != nullptr) {
+if (temp->name == oldName) {
+cout << "Enter new name (letters and spaces only): ";
+string newName;
+getline(cin, newName);
+if (!isValidName(newName)) {
+cout << "Invalid name. Must contain only letters and spaces. Update cancelled.\n";
+return;
+}
+temp->name = newName;
+cout << "Enter new phone number (10-12 digits): ";
+string newPhoneNumber;
+getline(cin, newPhoneNumber);
+if (!isValidPhoneNumber(newPhoneNumber)) {
+cout << "Invalid phone number or number already exists. Update cancelled.\n";
+return;
+}
+temp->phoneNumber = newPhoneNumber;
+temp->timestamp = getCurrentTime();
+cout << "Contact updated at " << temp->timestamp << ".\n";
+saveContactsToFile();
+return;
+}
+temp = temp->next;
+}
+cout << "Contact not found.\n";
 
 }
 // Delete contact by name
